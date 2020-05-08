@@ -1,0 +1,169 @@
+digraph domain {
+  rankdir =TB
+  edge [ fontsize = 11 ];
+  node [ shape=record ];
+  subgraph cluster_0 {
+    	label = "extend.util";
+	node [shape="record",fontname="Bitstream Vera Sans", fontsize=8, style=filled, labeljust=r, labelloc=b, fillcolor="#fee6ce", color="#e6550d"];
+    	ConfigSource [ label = "{ConfigSource |+ getNames() : Set\<E\>\l + getProperties() : Map\<K, V\>\l + getValue(String) : String\l <p>}" ]; 
+    	ExcelWrapper [ label = "{ExcelWrapper |+ logger : Logger\l  | + init()\l}" ]; 
+    	FileConfigSource [ label = "{FileConfigSource |+ logger : Logger\l |+ getNames() : Set\<E\>\l + getProperties() : Map\<K, V\>\l + getValue(key : String) : String\l}" ]; 
+  }
+  subgraph cluster_1 {
+    	label = "extend.pages";
+	node [shape="plaintext",fontname="Bitstream Vera Sans", fontsize=8, border="0"];
+    	InBoxPage [ label = 
+
+	<<table border="0" cellspacing="0" cellborder="1" align="left" width="200" >
+	<tr>		
+		<td COLSPAN="1" ALIGN="TEXT" BALIGN="center" width="400" COLOR="#e6550d" BGCOLOR="#fee6ce">InBoxPage</td>
+	</tr>
+	<tr>		
+		<td  COLSPAN="1" ALIGN="TEXT" BALIGN="left" width="400" COLOR="#e6550d" BGCOLOR="#fee6ce"><u> + logger: Logger </u></td>
+	</tr>
+	<tr>
+		<td COLSPAN="2" ALIGN="TEXT" BALIGN="left" width="400"  COLOR="#e6550d" BGCOLOR="#fee6ce"><u> + getEmailSubjects() : List&lt;String&gt;</u>
+			<br/><u>+ getInboxRows() : List&lt;WebElement&gt;</u>
+		</td>
+	</tr>
+	</table>>];
+    	LoginPage [ label = 
+<<table border="0" cellspacing="0" cellborder="1" align="left" width="200" >
+        <tr>
+                <td COLSPAN="1" ALIGN="TEXT" BALIGN="center" width="400" COLOR="#e6550d" BGCOLOR="#fee6ce">LoginPage</td>
+        </tr>
+        <tr>
+                <td  COLSPAN="1" ALIGN="TEXT" BALIGN="left" width="400" COLOR="#e6550d" BGCOLOR="#fee6ce"><u> + logger: Logger </u></td>
+        </tr>
+        <tr>
+                <td COLSPAN="2" ALIGN="TEXT" BALIGN="left" width="400"  COLOR="#e6550d" BGCOLOR="#fee6ce"><u> + SignIn(userName : String, userPasswd : String)</u>
+		<br/><u>+ go(url : String) </u>
+		</td>
+	</tr>
+	</table>> ];
+  }
+  subgraph cluster_2 {
+    	label = "extend.basic";
+	node [shape="plaintext",fontname="Bitstream Vera Sans", fontsize=8, border="0"];
+    	Control [ label = 
+	<<table border="0" cellspacing="0" cellborder="1" align="left" width="200" >
+	<tr>		
+		<td COLSPAN="1" ALIGN="TEXT" BALIGN="center" width="400" COLOR="#e6550d" BGCOLOR="#fee6ce">Control</td>
+	</tr>
+	<tr>		
+		<td  COLSPAN="1" ALIGN="TEXT" BALIGN="left" width="400" COLOR="#e6550d" BGCOLOR="#fee6ce"><u> + logger: Logger </u></td>
+	</tr>
+	<tr>
+		<td COLSPAN="6" ALIGN="TEXT" BALIGN="left" width="400"  COLOR="#e6550d" BGCOLOR="#fee6ce"><u> + isTextFieldEnabled(locator : By) : Boolean </u>
+		<br/><u> + isWebElementClickable(locator : By) : Boolean </u>
+		<br/><u> + isWebElementSelected(locator : By) : Boolean </u>
+		<br/><u> + waitOnElementPresent(locator : By) : WebElement </u>
+		<br/><u> + waitOnElementVisible(locator : By) : WebElement </u>
+		<br/><u> + waitOnElementsPresent(locator : By) : List&lt;WebElement&gt; </u></td>
+	</tr>
+	</table>>
+	];
+    	Driver [ label =
+	<<table border="0" cellspacing="0" cellborder="1" align="left" >
+	<tr>
+		<td COLSPAN="1" ALIGN="TEXT" BALIGN="center" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce">Driver</td>
+	</tr>
+	<tr> 
+		<td COLSPAN="2" ALIGN="TEXT" BALIGN="left" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce">
+			<u> - webDriver: WebDriver </u>
+                        <br/><u> + logger: Logger</u>
+		</td>
+	</tr>
+	<tr>	
+		<td COLSPAN="5" ALIGN="TEXT" BALIGN="left" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce">
+			<u> + applyScreenShotOnError(filePath : Path) : WebDriver </u>
+			<br/><u>+ closeDriver()</u>
+			<br/><u>+ getDriver() : WebDriver</u>
+			<br/><u>+ initDriver(targetPlatform : TargetPlatform) : WebDriver</u>
+			<br/><u>+ maximizeWindows()</u>
+		</td>
+	</tr> 
+	</table>> ]; 
+    	Page [ label = 
+	<<table border="0" cellspacing="0" cellborder="1" align="left" >
+	<tr>
+                <td COLSPAN="1" ALIGN="TEXT" BALIGN="center" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce"> Page </td>
+        </tr>
+	</table>> ];
+    	PageBuilder [ label =
+	<<table border="0" cellspacing="0" cellborder="1" align="left" >
+	<tr>
+		<td COLSPAN="1" ALIGN="TEXT" BALIGN="center" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce"><u>PageBuilder</u></td>
+	</tr>
+	<tr>
+                <td COLSPAN="1" ALIGN="TEXT" BALIGN="center" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce"> </td>
+        </tr>
+	<tr>
+		<td COLSPAN="18" ALIGN="TEXT" BALIGN="left" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce">
+			<u> + acceptAlert() : PageBuilder</u>
+			<br/><u> + clickAlertTrigger(locator : By)</u>
+			<br/><u> + getClickableElementsByLocator(locator : By) : List &lt;WebElement&gt;</u>
+			<br/><u> + getClickableElementsCountOn(frameLocator : By, locator : By) : int</u>
+			<br/><u> + getClickableElementsOnFrame(frameLocator : By, locator : By) : List&lt;WebElement&gt;</u>
+			<br/><u> + getPageTitle() : String</u>
+			<br/><u> + getSelectOptions(locator : By) : List&lt;String&gt;</u>
+			<br/><u> + getTableElements(locator : By) : List&lt;WebElement&gt;</u>
+			<br/><u> + getWindowsHandles() : Set&lt;String&gt;</u>
+			<br/><u> + go(url : String) : PageBuilder</u>
+			<br/> + moveToFrame(window : WebElement) : PageBuilder
+			<br/> + moveTodWindows(window : String) : PageBuilder
+			<br/> + newInstance() : PageBuilder
+			<br/> + searchTextField(locator : By, text : String) : PageBuilder
+			<br/> + selectSubMenuByLocator(locator : By, locator1 : By) : PageBuilder
+			<br/> + selectWebElement(locator : By) : PageBuilder
+			<br/> + setText(locator : By, text : String) : PageBuilder
+		</td>
+	</tr>	
+	</table>>]; 
+    	TargetPlatform [ label = 
+	 <<table border="0" cellspacing="0" cellborder="1" align="left" >
+        <tr>
+                <td COLSPAN="1" ALIGN="TEXT" BALIGN="center" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce">TargetPlatform</td>
+        </tr>
+        <tr>
+                <td COLSPAN="4" ALIGN="TEXT" BALIGN="left" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce">
+			- platform : String
+			<br/> - driverClassName : String
+			<br/> - profileClassName : String
+			<br/> - optionsClassName : String
+		</td>
+        </tr>
+        <tr>
+                <td COLSPAN="18" ALIGN="TEXT" BALIGN="left" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce">
+			- getDriverClassName() : String
+			<br/> - getOptionsClassName() : String
+			<br/> - getPlatform() : String
+			<br/> - getProfileClassName() : String
+		</td>
+	</tr>
+	</table>>];
+    	TargetPlatformMethods [ label = 
+	<<table border="0" cellspacing="0" cellborder="1" align="left" >
+        <tr>
+                <td COLSPAN="1" ALIGN="TEXT" BALIGN="center" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce"><u>TargetPlatformMethods</u></td>
+        </tr>
+        <tr>
+                <td COLSPAN="2" ALIGN="TEXT" BALIGN="left" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce">
+			<u> + supportedPlatform: TargetPlatform </u>
+			<br/><u> + logger : Logger </u></td>
+        </tr>
+        <tr>
+                <td COLSPAN="1" ALIGN="TEXT" BALIGN="left" WIDTH="400" COLOR="#e6550d" BGCOLOR="#fee6ce"><u> + getTargetPlatform(browser : String) :  TargetPlatform </u>
+		</td>	
+	</tr>
+	</table>>];	
+  }
+  PageBuilder -> Page [ dir=forward arrowhead=odiamond color="#de2d26"];
+  TargetLocator -> WebDriver [ dir=forward arrowhead=odiamond color="#de2d26"];
+  TargetPlatformMethods -> TargetPlatform [ dir=back arrowtail=odiamond color="#de2d26"];
+  InBoxPage -> Page [arrowhead=empty color="#de2d26"];
+  LoginPage -> Page [arrowhead=empty color="#de2d26"];
+  FileConfigSource -> ConfigSource [arrowhead=empty color="#de2d26"];
+  Driver -> Control [ dir=forward arrowhead=normal color="#de2d26"];
+  Driver -> TargetPlatform  [ dir=forward arrowhead=normal color="#de2d26"];
+}

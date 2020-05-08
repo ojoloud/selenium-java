@@ -1,78 +1,73 @@
 package extend.basic;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static extend.basic.Driver.getDriver;
 
 public class Control {
-
-   // public static Boolean isPageLoaded() {
-    //    WebDriverWait wait = new WebDriverWait(Driver.getDriver(),30);
-    //    return (Boolean) wait.until(((JavascriptExecutor)Driver.getDriver()));
-    //            //.executeScript("return document.readyState.equals(\"loaded\" )"));
-
-    //}
-
-    public static Boolean isTextFieldEnabled(By locator){
-        Boolean state = Boolean.FALSE;
+    public static final Logger logger = LoggerFactory.getLogger(Control.class);
+    public static Boolean isTextFieldEnabled(By locator) {
         try {
             WebElement textElement = (new WebDriverWait(Driver.getDriver(), 10)).until(ExpectedConditions.presenceOfElementLocated(locator));
-            state = textElement.isEnabled();
+            return textElement.isEnabled();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception occurred:  {} ", e);
         }
-            
-      return state;
+
+        return Boolean.FALSE;
     }
+
     public static Boolean isWebElementClickable(By locator) {
-        Boolean state = Boolean.FALSE;
-        try
-        {
-            WebDriverWait wait= new WebDriverWait(Driver.getDriver(), 60);
+        try {
+            WebDriverWait wait = new WebDriverWait(Driver.getDriver(), 60);
             WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-            state=element.isEnabled()&& element.isDisplayed();
+            return element.isEnabled() && element.isDisplayed();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Exception occurred:  {} ", e);
         }
-        return state;
+        return Boolean.FALSE;
     }
+
     public static WebElement waitOnElementVisible(By locator) {
-        WebElement webElement=null;
         try {
-            webElement= (new WebDriverWait(Driver.getDriver(),10)).until(ExpectedConditions.visibilityOfElementLocated(locator));
-        }catch (Exception e) {
-            e.printStackTrace();
+            WebElement webElement = (new WebDriverWait(Driver.getDriver(), 30)).until(ExpectedConditions.visibilityOfElementLocated(locator));
+            return webElement;
+        } catch (Exception e) {
+            logger.error("Exception occurred:  {} ", e);
         }
-        return webElement;
+        return null;
     }
+
     public static List<WebElement> waitOnElementsPresent(By locator) {
-        List<WebElement> webElement=null;
         try {
-            webElement= (new WebDriverWait(Driver.getDriver(),30)).until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
-        }catch (Exception e) {
-            e.printStackTrace();
+            List <WebElement> webElement = (new WebDriverWait(Driver.getDriver(), 30)).until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
+            return webElement;
+        } catch (Exception e) {
+            logger.error("Exception occurred:  {} ", e);
         }
-        return webElement;
+        return null;
     }
+
     public static WebElement waitOnElementPresent(By locator) {
-        WebElement webElement=null;
         try {
-            webElement= (new WebDriverWait(Driver.getDriver(),30)).until(ExpectedConditions.presenceOfElementLocated(locator));
-        }catch (Exception e) {
+            WebElement webElement = (new WebDriverWait(Driver.getDriver(), 30)).until(ExpectedConditions.presenceOfElementLocated(locator));
+            return webElement;
+        } catch (Exception e) {
+            logger.error("Exception occurred: {} ", e);
             e.printStackTrace();
         }
-        return webElement;
+        return null;
     }
 
     // }
-     public static Boolean isWebElementSelected(By locator) {
-         return getDriver().findElement(locator).isSelected();
-     }
+    public static Boolean isWebElementSelected(By locator) {
+        return getDriver().findElement(locator).isSelected();
+    }
 }

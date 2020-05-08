@@ -5,9 +5,12 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Path;
 
 public class Driver {
     public static WebDriver getDriver() {
@@ -15,39 +18,44 @@ public class Driver {
     }
 
     private static WebDriver driver;
-    private static final String IMAGEPATH = "/Users/Olga/Downloads/";
+    private static final String IMAGEPATH = "/var/tmp/";
+    public static final Logger logger = LoggerFactory.getLogger(Driver.class);
+
     public Driver() {
     }
 
-    public static WebDriver initDriver(TargetPlatform targetPlatform){
+    public static WebDriver initDriver(TargetPlatform targetPlatform) {
         try {
-            Class<?>  browserOptions = Class.forName(targetPlatform.getOptionsClassName());
+            Class<?> browserOptions = Class.forName(targetPlatform.getOptionsClassName());
             Object browserOptionsObject = browserOptions.getDeclaredConstructor().newInstance();
-            Class<?>  driverName = Class.forName(targetPlatform.getDriverClassName());
-            driver= (WebDriver) driverName.getDeclaredConstructor(browserOptions).newInstance(browserOptionsObject);
+            Class<?> driverName = Class.forName(targetPlatform.getDriverClassName());
+            driver = (WebDriver) driverName.getDeclaredConstructor(browserOptions).newInstance(browserOptionsObject);
+            logger.info("initialized driver {} ", driverName);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("Exception occurred: {} ", e.getStackTrace());
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            logger.error("Exception occurred: {} ", e.getStackTrace());
         } catch (InstantiationException e) {
-            e.printStackTrace();
+            logger.error("Exception occurred: {} ", e.getStackTrace());
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            logger.error("Exception occurred: {} ", e.getStackTrace());
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            logger.error("Exception occurred: {} ", e.getStackTrace());
         }
         return driver;
     }
-    public static WebDriver applyScreenShotOnError() {
-            Driver.driver = new EventFiringWebDriver(driver).register(new AbstractWebDriverEventListener() {
+
+    public static WebDriver applyScreenShotOnError(Path filePath) {
+        logger.debug("screen shot path {}", filePath.toString());
+        Driver.driver = new EventFiringWebDriver(driver).register(new AbstractWebDriverEventListener() {
             @Override
             public void onException(Throwable throwable, WebDriver driver) {
                 super.onException(throwable, driver);
-                File screenShot=((TakesScreenshot)Driver.driver).getScreenshotAs(OutputType.FILE);
+                File screenShot = ((TakesScreenshot) Driver.driver).getScreenshotAs(OutputType.FILE);
                 try {
-                    screenShot.renameTo(new File(IMAGEPATH + driver.getTitle() +   ".png"));
+                    screenShot.renameTo(new File(filePath + driver.getTitle() + ".png"));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("Exception occurred: {} ", e.getStackTrace());
                 }
             }
         });
@@ -57,6 +65,7 @@ public class Driver {
     public static void maximizeWindows() {
         Driver.driver.manage().window().maximize();
     }
+
     public static void closeDriver() {
         Driver.getDriver().close();
     }

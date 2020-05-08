@@ -1,53 +1,43 @@
 package extend.util;
-
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFName;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 public class ExcelWrapper {
-    public static final String DATAFILE= new File("src/main/resources/workbook.xlxs").getAbsolutePath();
+    public static final String DATAFILE = new File("src/main/resources/workbook.xlxs").getAbsolutePath();
     public static XSSFWorkbook workbook;
     public static HashMap<String, ArrayList<String>> table = new HashMap<>();
-
+    public static final Logger logger = LoggerFactory.getLogger(ExcelWrapper.class);
     public ExcelWrapper() {
     }
-    public static void init(){
+
+    public static void init() {
         try {
             workbook = new XSSFWorkbook(new FileInputStream(DATAFILE));
             XSSFSheet sheet = workbook.getSheet("Sheet1");
             Iterator<Row> rowIterator = sheet.rowIterator();
             while (rowIterator.hasNext()) {
                 Row iRow = rowIterator.next();
-                int firstCol=iRow.getFirstCellNum();
-                int lastCol=iRow.getLastCellNum();
-                ArrayList<String> k= new ArrayList<>();
-                for (int i=firstCol+1; i< lastCol+1; i++) {
+                int firstCol = iRow.getFirstCellNum();
+                int lastCol = iRow.getLastCellNum();
+                ArrayList<String> k = new ArrayList<>();
+                for (int i = firstCol + 1; i < lastCol + 1; i++) {
                     k.add(iRow.getCell(i).getStringCellValue());
                 }
-                table.put(iRow.getCell(firstCol).getStringCellValue(),k);
+                table.put(iRow.getCell(firstCol).getStringCellValue(), k);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Exception occurred:  {} ", e);
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            logger.error("Exception occurred:  {} ", e);
         }
     }
-    public static String getData(String name){
-        String value="";
-        try {
-           ArrayList<String> data=table.get(name);
-           value=data.get(0);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        return value;
-    }
+
 }
